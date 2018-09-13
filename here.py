@@ -13,12 +13,14 @@ weather =   (
             )   
 
 location =  (
-            "https://traffic.api.here.com/traffic/6.2/flow/json"
+            "https://traffic.api.here.com/traffic/6.2/flow.json"
             "?app_id=" + appID + 
             "&app_code=" + appCode +
-            "&bbox=28.469295,76.967812;28.672817,77.431641"
+            "&bbox=28.624347,77.205863;28.637060,77.335174"
             "&responseattributes=sh,fc"
             )
+
+#           "&bbox=28.469295,76.967812;28.672817,77.431641"
 
 r = requests.get(location)
 # r = requests.get(weather)
@@ -26,4 +28,4 @@ r = requests.get(location)
 print r.status_code
 
 result = json.loads(r.text)
-print json.dumps(result, indent=4, sort_keys=True)
+print json.dumps(result, indent=2, sort_keys=True)
