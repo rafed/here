@@ -23,20 +23,21 @@ location =  (
     "?app_id=" + appID + 
     "&app_code=" + appCode +
     "&bbox=28.624347,77.205863;28.637060,77.335174"
+    # "&tables=ECC+CCD+Table"
     # "&responseattributes=sh,fc"
 )
 
 # "&bbox=28.469295,76.967812;28.672817,77.431641"
 
-r = requests.get(doc)
+# r = requests.get(doc)
 # r = requests.get(location)
-# r = requests.get(weather)
+r = requests.get(weather)
 
 if r.status_code != 200:
     print r.status_code
     exit(1)
 
-print r.text
+# print r.text
 
-# result = json.loads(r.text)
-# print json.dumps(result, indent=2, sort_keys=True)
+result = json.loads(r.text)
+print json.dumps(result, indent=2) #, sort_keys=True)

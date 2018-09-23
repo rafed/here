@@ -43,7 +43,7 @@
          </xs:attribute>
          <xs:attribute name="TMC_TABLE_VERSION" type="xs:string" use="optional">
             <xs:annotation>
-               <xs:documentation>TMC Table version. In some cases these value may not be						available.</xs:documentation>
+               <xs:documentation>TMC Table version. In some cases these value may not be available.</xs:documentation>
             </xs:annotation>
          </xs:attribute>
          <xs:attribute name="CREATED_TIMESTAMP" type="xs:dateTime" use="required">
@@ -87,7 +87,7 @@
       </xs:attribute>
       <xs:attribute name="EBU_COUNTRY_CODE" type="xs:string" use="required">
          <xs:annotation>
-            <xs:documentation>TMC Table country code - e.g. US = 1, Germany =					D</xs:documentation>
+            <xs:documentation>TMC Table country code - e.g. US = 1, Germany =D</xs:documentation>
          </xs:annotation>
       </xs:attribute>
       <xs:attribute name="EXTENDED_COUNTRY_CODE" type="xs:string" use="required">
@@ -97,7 +97,7 @@
       </xs:attribute>
       <xs:attribute name="TABLE_ID" type="xs:string" use="required">
          <xs:annotation>
-            <xs:documentation>TMC Table - e.g. US/Chicago area = 7, Germany =					1</xs:documentation>
+            <xs:documentation>TMC Table - e.g. US/Chicago area = 7, Germany =1</xs:documentation>
          </xs:annotation>
       </xs:attribute>
       <xs:attribute name="TMC_TABLE_VERSION" type="xs:string" use="optional">
@@ -187,7 +187,7 @@
                      </xs:attribute>
                      <xs:attribute name="LE" type="length" use="optional">
                         <xs:annotation>
-                           <xs:documentation>Length of the stretch of road. The units are										defined in the file header.</xs:documentation>
+                           <xs:documentation>Length of the stretch of road. The units are defined in the file header.</xs:documentation>
                            <xs:documentation>Since v3.2.0</xs:documentation>
                         </xs:annotation>
                      </xs:attribute>
@@ -209,7 +209,7 @@
          </xs:element>
          <xs:element name="PF" type="PF_TYPE" minOccurs="0">
             <xs:annotation>
-               <xs:documentation>Predictive Flow. This element contains details about predicted						speed values for epochs in the future. Note that this element is optional						and well not contain data for the first releases.</xs:documentation>
+               <xs:documentation>Predictive Flow. This element contains details about predicted						speed values for epochs in the future. Note that this element is optional and well not contain data for the first releases.</xs:documentation>
             </xs:annotation>
          </xs:element>
       </xs:sequence>
@@ -227,7 +227,7 @@
       </xs:attribute>
       <xs:attribute name="QD" type="xs:string" use="required">
          <xs:annotation>
-            <xs:documentation>Queuing direction. '+' or '-'. Note this is the opposite of the					travel direction in the fully qualified ID, For example for location 107+03021					the QD would be '-'.</xs:documentation>
+            <xs:documentation>Queuing direction. '+' or '-'. Note this is the opposite of the travel direction in the fully qualified ID, For example for location 107+03021 the QD would be '-'.</xs:documentation>
          </xs:annotation>
       </xs:attribute>
       <xs:attribute name="LE" type="length" use="required">
