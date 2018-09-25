@@ -7,7 +7,7 @@ drop table data;
 create table data (
 	src varchar(300),
 	dst varchar(300),
-	le varchar(10)
+	le varchar(10),
 	cn varchar(10),
 	sp varchar(10),
 	su varchar(10),
