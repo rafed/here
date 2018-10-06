@@ -23,5 +23,6 @@ create table data (
 	windspeed varchar(10),
 	date varchar(20),
 	time varchar(20),
-	holiday int
+	holiday int,
+	area int
 )

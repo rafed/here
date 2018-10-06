@@ -15,12 +15,12 @@ mydb = mysql.connector.connect(
 mycursor = mydb.cursor()
 
 coordinates = [
-    ((28.747193,77.091064),(28.663211,77.1978375)),
-    ((28.663211,77.091064),(28.579229,77.1978375)),
-    ((28.579229,77.091064),(28.495247,77.1978375)),
-    ((28.747193,77.1978375),(28.663211,77.304611)),
-    ((28.663211,77.1978375),(28.579229,77.304611)),
-    ((28.579229,77.1978375),(28.495247,77.304611))
+    ((28.747193,77.091064),(28.663211,77.1978375)),     # 1
+    ((28.663211,77.091064),(28.579229,77.1978375)),     # 2
+    ((28.579229,77.091064),(28.495247,77.1978375)),     # 3
+    ((28.747193,77.1978375),(28.663211,77.304611)),     # 4
+    ((28.663211,77.1978375),(28.579229,77.304611)),     # 5
+    ((28.579229,77.1978375),(28.495247,77.304611))      # 6
     ## ((28.614439,77.144623),(28.665286,77.260580)) ## previous coord for test
 ]
 
@@ -31,7 +31,10 @@ weekday = dt.today().weekday()
 
 rows = []
 
+area = 0
 for pointX,pointY in coordinates:
+    area = area + 1
+
     lat1,long1=pointX
     lat2,long2=pointY
 
@@ -128,7 +131,7 @@ for pointX,pointY in coordinates:
                     
                     row =   (src, dst, LE, CN, SP, SU, FF, JF, SHP, \
                             weekday, temperature, daylight, humidity, \
-                            rainfall, rainDesc, windspeed, date, time, 0) # 0 for not holiday
+                            rainfall, rainDesc, windspeed, date, time, 0, area) # 0 for not holiday
                     rows.append(row)
     except Exception as e:
         print "Field access error in traffic json!"
@@ -146,7 +149,7 @@ for pointX,pointY in coordinates:
         exit(1)
 
     try:
-        query = "insert into data values (%s" + ",%s"*18 + ")" ## %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        query = "insert into data values (%s" + ",%s"*19 + ")" ## %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         mycursor.executemany(query, rows)
         mydb.commit()
     except Exception as e:
