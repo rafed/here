@@ -90,81 +90,76 @@ for pointX,pointY in coordinates:
             s = "[%s] Traffic request error: %s %s\n" % (datetime.now(), r.status_code, r.text)
             error.write(s)
         continue
+    else:
+        try:
+            traffic_json = json.loads(r.text)
+        except Exception as e:
+            print "JSON parse error"
+            with open("error.log.txt", "a") as error:
+                s = "[%s] %s\n" % (datetime.now(), e)
+                error.write(s)
+            fname = str(datetime.now()) + ".traffic.txt"
+            with open(fname, "w") as jsonFile:
+                jsonFile.write(r.text)
+            continue
 
-    try:
-        traffic_json = json.loads(r.text)
-    except Exception as e:
-        print "JSON parse error"
-        with open("error.log.txt", "a") as error:
-            s = "[%s] %s\n" % (datetime.now(), e)
-            error.write(s)
-        fname = str(datetime.now()) + ".traffic.txt"
-        with open(fname, "w") as jsonFile:
-            jsonFile.write(r.text)
-        continue
+        try:
+            for RWS in traffic_json['RWS']:
+                for RW in RWS['RW']:
+                    for FIS in RW['FIS']:
+                        LI = RW['LI']
+                        if LI[4] == "-":
+                            src = RW['DE']
+                            for FI in FIS['FI']:
+                                dst = FI['TMC']['DE']
+                                LE = FI['TMC']['LE']
+                                CN = FI['CF']['CN']
+                                SP = FI['CF'][0]['SP']
+                                SU = FI['CF'][0]['SU']
+                                FF = FI['CF'][0]['FF']
+                                JF = FI['CF'][0]['JF']
+                                SHP = FI['SHP'][0]['value'][0]
+                        else:
+                            dst = RW['DE']
+                            for FI in FIS['FI']:
+                                src = FI['TMC']['DE']
+                                LE = FI['TMC']['LE']
+                                CN = FI['CF'][0]['CN']
+                                SP = FI['CF'][0]['SP']
+                                SU = FI['CF'][0]['SU']
+                                FF = FI['CF'][0]['FF']
+                                JF = FI['CF'][0]['JF']
+                                SHP = FI['SHP'][0]['value'][0]
+                        
+                        row =   (src, dst, LE, CN, SP, SU, FF, JF, SHP, \
+                                weekday, temperature, daylight, humidity, \
+                                rainfall, rainDesc, windspeed, date, time, 0, area) # 0 for not holiday
+                        rows.append(row)
+        except Exception as e:
+            print "Field access error in traffic json!"
+            with open("error.log.txt", "a") as error:
+                s = "[%s] %s\n" % (datetime.now(), e)
+                error.write(s)
+            
+            fname = str(datetime.now()) + ".traffic.txt"
+            with open(fname, "w") as jsonFile:
+                jsonFile.write(r.text)
 
-    try:
-        for RWS in traffic_json['RWS']:
-            for RW in RWS['RW']:
-                for FIS in RW['FIS']:
-                    LI = RW['LI']
-                    if LI[4] == "-":
-                        src = RW['DE']
-                        for FI in FIS['FI']:
-                            dst = FI['TMC']['DE']
-                            LE = FI['TMC']['LE']
-                            CN = FI['CF']['CN']
-                            SP = FI['CF'][0]['SP']
-                            SU = FI['CF'][0]['SU']
-                            FF = FI['CF'][0]['FF']
-                            JF = FI['CF'][0]['JF']
-                            SHP = FI['SHP'][0]['value'][0]
-                    else:
-                        dst = RW['DE']
-                        for FI in FIS['FI']:
-                            src = FI['TMC']['DE']
-                            LE = FI['TMC']['LE']
-                            CN = FI['CF'][0]['CN']
-                            SP = FI['CF'][0]['SP']
-                            SU = FI['CF'][0]['SU']
-                            FF = FI['CF'][0]['FF']
-                            JF = FI['CF'][0]['JF']
-                            SHP = FI['SHP'][0]['value'][0]
-                    
-                    row =   (src, dst, LE, CN, SP, SU, FF, JF, SHP, \
-                            weekday, temperature, daylight, humidity, \
-                            rainfall, rainDesc, windspeed, date, time, 0, area) # 0 for not holiday
-                    rows.append(row)
-    except Exception as e:
-        print "Field access error in traffic json!"
-        with open("error.log.txt", "a") as error:
-            s = "[%s] %s\n" % (datetime.now(), e)
-            error.write(s)
-        
-        fname = str(datetime.now()) + ".traffic.txt"
-        with open(fname, "w") as jsonFile:
-            jsonFile.write(r.text)
+        try:
+            query = "insert into data values (%s" + ",%s"*19 + ")"
+            mycursor.executemany(query, rows)
+            mydb.commit()
+        except Exception as e:
+            print "Database error"
+            with open("error.log.txt", "a") as error:
+                s = "[%s] %s\n" % (datetime.now(), e)
+                error.write(s)
 
-        fname = str(datetime.now()) + ".weather.txt"
-        with open(fname, "w") as jsonFile:
-            jsonFile.write(r.text)    
-        exit(1)
+            fname = str(datetime.now()) + ".traffic.txt"
+            with open(fname, "w") as jsonFile:
+                jsonFile.write(r.text)
 
-    try:
-        query = "insert into data values (%s" + ",%s"*19 + ")" ## %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
-        mycursor.executemany(query, rows)
-        mydb.commit()
-    except Exception as e:
-        print "Database error"
-        with open("error.log.txt", "a") as error:
-            s = "[%s] %s\n" % (datetime.now(), e)
-            error.write(s)
-
-        fname = str(datetime.now()) + ".traffic.txt"
-        with open(fname, "w") as jsonFile:
-            jsonFile.write(r.text)
-
-        fname = str(datetime.now()) + ".weather.txt"
-        with open(fname, "w") as jsonFile:
-            jsonFile.write(r.text)    
-        exit(1)
+            fname = str(datetime.now()) + ".weather.txt"
+            with open(fname, "w") as jsonFile:
+                jsonFile.write(r.text)    
+            exit(1)
