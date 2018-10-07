@@ -161,5 +161,5 @@ for pointX,pointY in coordinates:
 
             fname = str(datetime.now()) + ".weather.txt"
             with open(fname, "w") as jsonFile:
-                jsonFile.write(r.text)    
-            exit(1)
+                jsonFile.write(r.text)
+            
