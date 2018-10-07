@@ -46,39 +46,41 @@ for pointX,pointY in coordinates:
 
     r = requests.get(weatherURL)
     weather_data = r.text
+
+    daylight = ""
+    temperature = ""
+    humidity = ""
+    windspeed = ""
+    rainDesc = ""
+    rainfall = ""
+
     if r.status_code != 200:
         print "Weather request error"
         with open("error.log.txt", "a") as error:
             s = "[%s] Weather request error: %s %s\n" % (datetime.now(), r.status_code, weather_data)
             error.write(s)
+    else:
+        try:
+            weather_json = json.loads(r.text)
 
-    try:
-        weather_json = json.loads(r.text)
-    except Exception as e:
-        print "Weather JSON parse error"
-        with open("error.log.txt", "a") as error:
-            s = "[%s] %s\n" % (datetime.now(), e)
-            error.write(s)
+            observations = weather_json['observations']
+            location = observations['location'][0]
+            observation = location['observation'][0]
 
-    try:
-        observations = weather_json['observations']
-        location = observations['location'][0]
-        observation = location['observation'][0]
+            daylight = observation['daylight']
+            temperature = observation['temperature']
+            humidity = observation['humidity']
+            windspeed = observation['windSpeed']
+            rainDesc = observation['precipitationDesc']
+            rainfall = observation['rainFall'] if 'rainFall' in observation else ""
+        except Exception as e:
+            with open("error.log.txt", "a") as error:
+                s = "[%s] %s\n" % (datetime.now(), e)
+                error.write(s)
 
-        daylight = observation['daylight']
-        temperature = observation['temperature']
-        humidity = observation['humidity']
-        windspeed = observation['windSpeed']
-        rainDesc = observation['precipitationDesc']
-        rainfall = observation['rainFall'] if 'rainFall' in observation else ""
-    except Exception as e:
-        print "Weather data accessing error"
-        with open("error.log.txt", "a") as error:
-            s = "[%s] %s\n" % (datetime.now(), e)
-            error.write(s)
-        fname = str(datetime.now()) + ".weather.txt"
-        with open(fname, "w") as jsonFile:
-            jsonFile.write(weather_data)
+            fname = str(datetime.now()) + ".weather.txt"
+            with open(fname, "w") as jsonFile:
+                jsonFile.write(weather_data)
 
     r = requests.get(trafficURL)
 
@@ -87,7 +89,7 @@ for pointX,pointY in coordinates:
         with open("error.log.txt", "a") as error:
             s = "[%s] Traffic request error: %s %s\n" % (datetime.now(), r.status_code, r.text)
             error.write(s)
-        exit(1)
+        continue
 
     try:
         traffic_json = json.loads(r.text)
@@ -99,7 +101,7 @@ for pointX,pointY in coordinates:
         fname = str(datetime.now()) + ".traffic.txt"
         with open(fname, "w") as jsonFile:
             jsonFile.write(r.text)
-        exit(1)
+        continue
 
     try:
         for RWS in traffic_json['RWS']:
