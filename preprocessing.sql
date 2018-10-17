@@ -16,5 +16,6 @@ select src,dst,cn,temperature,daylight,humidity,windspeed,time,holiday,jf from d
 -- useful stuff
 mysqldump -uhere -phere here data > traffic.sql
 strace -p20797 -s9999 -e write
+nohup categorical.py > foo.out 2> foo.err < /dev/null &
 
 java -Xmx2000m -jar weka.jar
