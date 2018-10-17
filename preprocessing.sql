@@ -13,7 +13,8 @@ UPDATE data SET dst=REPLACE(dst, "\'", " "); -- labh nai
 -- for dumping data
 select src,dst,cn,temperature,daylight,humidity,windspeed,time,holiday,jf from data into outfile '/tmp/lol.csv' fields terminated by ',' lines terminated by '\n';
 
--- dump table
+-- useful stuff
 mysqldump -uhere -phere here data > traffic.sql
+strace -p20797 -s9999 -e write
 
 java -Xmx2000m -jar weka.jar
