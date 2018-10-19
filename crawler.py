@@ -68,11 +68,12 @@ for pointX,pointY in coordinates:
             observation = location['observation'][0]
 
             daylight = observation['daylight']
+            daylight = 0 if daylight=="D" else 1;
             temperature = observation['temperature']
             humidity = observation['humidity']
             windspeed = observation['windSpeed']
             rainDesc = observation['precipitationDesc']
-            rainfall = observation['rainFall'] if 'rainFall' in observation else ""
+            # rainfall = observation['rainFall'] if 'rainFall' in observation else ""
         except Exception as e:
             with open("error.log.txt", "a") as error:
                 s = "[%s] %s\n" % (datetime.now(), e)
@@ -112,28 +113,32 @@ for pointX,pointY in coordinates:
                             src = RW['DE']
                             for FI in FIS['FI']:
                                 dst = FI['TMC']['DE']
-                                LE = FI['TMC']['LE']
+                                # LE = FI['TMC']['LE']
                                 CN = FI['CF']['CN']
-                                SP = FI['CF'][0]['SP']
-                                SU = FI['CF'][0]['SU']
-                                FF = FI['CF'][0]['FF']
+                                # SP = FI['CF'][0]['SP']
+                                # SU = FI['CF'][0]['SU']
+                                # FF = FI['CF'][0]['FF']
                                 JF = FI['CF'][0]['JF']
-                                SHP = FI['SHP'][0]['value'][0]
+                                # SHP = FI['SHP'][0]['value'][0]
                         else:
                             dst = RW['DE']
                             for FI in FIS['FI']:
                                 src = FI['TMC']['DE']
-                                LE = FI['TMC']['LE']
+                                # LE = FI['TMC']['LE']
                                 CN = FI['CF'][0]['CN']
-                                SP = FI['CF'][0]['SP']
-                                SU = FI['CF'][0]['SU']
-                                FF = FI['CF'][0]['FF']
+                                # SP = FI['CF'][0]['SP']
+                                # SU = FI['CF'][0]['SU']
+                                # FF = FI['CF'][0]['FF']
                                 JF = FI['CF'][0]['JF']
-                                SHP = FI['SHP'][0]['value'][0]
+                                # SHP = FI['SHP'][0]['value'][0]
                         
-                        row =   (src, dst, LE, CN, SP, SU, FF, JF, SHP, \
+                        # row =   (src, dst, LE, CN, SP, SU, FF, JF, SHP, \
+                        #         weekday, temperature, daylight, humidity, \
+                        #         rainfall, rainDesc, windspeed, date, time, 0, area) # 0 for not holiday
+
+                        row =   (src, dst, CN, JF, \
                                 weekday, temperature, daylight, humidity, \
-                                rainfall, rainDesc, windspeed, date, time, 0, area) # 0 for not holiday
+                                rainDesc, windspeed, date, time, 0, area)
                         rows.append(row)
         except Exception as e:
             print "Field access error in traffic json!"
@@ -146,7 +151,7 @@ for pointX,pointY in coordinates:
                 jsonFile.write(r.text)
 
         try:
-            query = "insert into data values (%s" + ",%s"*19 + ")"
+            query = "insert into data values (%s" + ",%s"*13 + ")"
             mycursor.executemany(query, rows)
             mydb.commit()
         except Exception as e:
