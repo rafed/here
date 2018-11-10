@@ -114,7 +114,7 @@ for pointX,pointY in coordinates:
                             for FI in FIS['FI']:
                                 dst = FI['TMC']['DE']
                                 # LE = FI['TMC']['LE']
-                                CN = FI['CF']['CN']
+                                # CN = FI['CF']['CN']
                                 # SP = FI['CF'][0]['SP']
                                 # SU = FI['CF'][0]['SU']
                                 # FF = FI['CF'][0]['FF']
@@ -125,18 +125,24 @@ for pointX,pointY in coordinates:
                             for FI in FIS['FI']:
                                 src = FI['TMC']['DE']
                                 # LE = FI['TMC']['LE']
-                                CN = FI['CF'][0]['CN']
+                                # CN = FI['CF'][0]['CN']
                                 # SP = FI['CF'][0]['SP']
                                 # SU = FI['CF'][0]['SU']
                                 # FF = FI['CF'][0]['FF']
                                 JF = FI['CF'][0]['JF']
                                 # SHP = FI['SHP'][0]['value'][0]
                         
+                        # DROPPING LE, SP, SU, FF, SHP, rainfall, 
                         # row =   (src, dst, LE, CN, SP, SU, FF, JF, SHP, \
                         #         weekday, temperature, daylight, humidity, \
                         #         rainfall, rainDesc, windspeed, date, time, 0, area) # 0 for not holiday
 
-                        row =   (src, dst, CN, JF, \
+                        ## DROPPING CN
+                        # row =   (src, dst, CN, JF, \
+                        #         weekday, temperature, daylight, humidity, \
+                        #         rainDesc, windspeed, date, time, 0, area)
+
+                        row =   (src, dst, JF, \
                                 weekday, temperature, daylight, humidity, \
                                 rainDesc, windspeed, date, time, 0, area)
                         rows.append(row)
@@ -151,7 +157,7 @@ for pointX,pointY in coordinates:
                 jsonFile.write(r.text)
 
         try:
-            query = "insert into data values (%s" + ",%s"*13 + ")"
+            query = "insert into data values (%s" + ",%s"*12 + ")"
             mycursor.executemany(query, rows)
             mydb.commit()
         except Exception as e:

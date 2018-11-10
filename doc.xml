@@ -279,7 +279,7 @@
       </xs:attribute>
       <xs:attribute name="JF" type="jamFactor" use="required">
          <xs:annotation>
-            <xs:documentation>The number between 0.0 and 10.0 indicating the expected quality of					travel. When there is a road closure, the Jam Factor will be 10. As the number					approaches 10.0 the quality of travel is getting worse. -1.0 indicates that a					Jam Factor could not be calculated.</xs:documentation>
+            <xs:documentation>The number between 0.0 and 10.0 indicating the expected quality of travel. When there is a road closure, the Jam Factor will be 10. As the number					approaches 10.0 the quality of travel is getting worse. -1.0 indicates that a					Jam Factor could not be calculated.</xs:documentation>
          </xs:annotation>
       </xs:attribute>
       <xs:attribute name="CN" use="required">
