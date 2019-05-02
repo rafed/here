@@ -23,6 +23,6 @@ create table data (
 	rainDesc varchar(50),
 	windspeed varchar(10),
 	holiday int,
-	area int
+	area int,
 	jf varchar(10)
 )
