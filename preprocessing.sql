@@ -52,27 +52,3 @@ Light rain
 
 Date range: 07-10-2018  26-12-2018
 
-Ubuntu 14.04.5 LTS
-Linux 4.15.0-20-generic x86_64
-
-CPU op-mode(s):        32-bit, 64-bit
-Byte Order:            Little Endian
-CPU(s):                24
-On-line CPU(s) list:   0-23
-Thread(s) per core:    2
-Core(s) per socket:    6
-Socket(s):             2
-NUMA node(s):          2
-Vendor ID:             GenuineIntel
-CPU family:            6
-Model:                 63
-Stepping:              2
-CPU MHz:               1200.068
-BogoMIPS:              4799.91
-Virtualization:        VT-x
-L1d cache:             32K
-L1i cache:             32K
-L2 cache:              256K
-L3 cache:              15360K
-NUMA node0 CPU(s):     0,2,4,6,8,10,12,14,16,18,20,22
-NUMA node1 CPU(s):     1,3,5,7,9,11,13,15,17,19,21,23

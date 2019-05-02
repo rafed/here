@@ -53,9 +53,10 @@ for pointX,pointY in coordinates:
     windspeed = ""
     rainDesc = ""
     rainfall = ""
+    holiday=0
 
     if r.status_code != 200:
-        print "Weather request error"
+        print("Weather request error")
         with open("error.log.txt", "a") as error:
             s = "[%s] Weather request error: %s %s\n" % (datetime.now(), r.status_code, weather_data)
             error.write(s)
@@ -86,7 +87,7 @@ for pointX,pointY in coordinates:
     r = requests.get(trafficURL)
 
     if r.status_code != 200:
-        print "Traffic request error"
+        print("Traffic request error")
         with open("error.log.txt", "a") as error:
             s = "[%s] Traffic request error: %s %s\n" % (datetime.now(), r.status_code, r.text)
             error.write(s)
@@ -95,7 +96,7 @@ for pointX,pointY in coordinates:
         try:
             traffic_json = json.loads(r.text)
         except Exception as e:
-            print "JSON parse error"
+            print("JSON parse error")
             with open("error.log.txt", "a") as error:
                 s = "[%s] %s\n" % (datetime.now(), e)
                 error.write(s)
@@ -109,15 +110,15 @@ for pointX,pointY in coordinates:
                 for RW in RWS['RW']:
                     for FIS in RW['FIS']:
                         LI = RW['LI']
-                        if LI[4] == "-":
+                        if "-" in LI:
                             src = RW['DE']
                             for FI in FIS['FI']:
                                 dst = FI['TMC']['DE']
                                 # LE = FI['TMC']['LE']
                                 # CN = FI['CF']['CN']
                                 # SP = FI['CF'][0]['SP']
-                                # SU = FI['CF'][0]['SU']
-                                # FF = FI['CF'][0]['FF']
+                                SU = FI['CF'][0]['SU']
+                                FF = FI['CF'][0]['FF']
                                 JF = FI['CF'][0]['JF']
                                 # SHP = FI['SHP'][0]['value'][0]
                         else:
@@ -127,27 +128,18 @@ for pointX,pointY in coordinates:
                                 # LE = FI['TMC']['LE']
                                 # CN = FI['CF'][0]['CN']
                                 # SP = FI['CF'][0]['SP']
-                                # SU = FI['CF'][0]['SU']
-                                # FF = FI['CF'][0]['FF']
+                                SU = FI['CF'][0]['SU']
+                                FF = FI['CF'][0]['FF']
                                 JF = FI['CF'][0]['JF']
                                 # SHP = FI['SHP'][0]['value'][0]
                         
-                        # DROPPING LE, SP, SU, FF, SHP, rainfall, 
-                        # row =   (src, dst, LE, CN, SP, SU, FF, JF, SHP, \
-                        #         weekday, temperature, daylight, humidity, \
-                        #         rainfall, rainDesc, windspeed, date, time, 0, area) # 0 for not holiday
+                        row =   (date, time, weekday, src, dst, \
+                                SU, FF, temperature, daylight, humidity, \
+                                rainDesc, windspeed, holiday, area, JF)
 
-                        ## DROPPING CN
-                        # row =   (src, dst, CN, JF, \
-                        #         weekday, temperature, daylight, humidity, \
-                        #         rainDesc, windspeed, date, time, 0, area)
-
-                        row =   (src, dst, JF, \
-                                weekday, temperature, daylight, humidity, \
-                                rainDesc, windspeed, date, time, 0, area)
                         rows.append(row)
         except Exception as e:
-            print "Field access error in traffic json!"
+            print("Field access error in traffic json!")
             with open("error.log.txt", "a") as error:
                 s = "[%s] %s\n" % (datetime.now(), e)
                 error.write(s)
@@ -157,11 +149,11 @@ for pointX,pointY in coordinates:
                 jsonFile.write(r.text)
 
         try:
-            query = "insert into data values (%s" + ",%s"*12 + ")"
+            query = "insert into data values (%s" + ",%s"*14 + ")"
             mycursor.executemany(query, rows)
             mydb.commit()
         except Exception as e:
-            print "Database error"
+            print("Database error")
             with open("error.log.txt", "a") as error:
                 s = "[%s] %s\n" % (datetime.now(), e)
                 error.write(s)
