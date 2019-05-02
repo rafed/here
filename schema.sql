@@ -20,7 +20,7 @@ create table data (
 	daylight varchar(5),
 	humidity varchar(10),
 	-- rainfall varchar(10),
-	rainDesc varchar(50),
+	raindesc varchar(50),
 	windspeed varchar(10),
 	holiday int,
 	area int,

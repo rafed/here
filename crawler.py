@@ -69,11 +69,12 @@ for pointX,pointY in coordinates:
             observation = location['observation'][0]
 
             daylight = observation['daylight']
-            daylight = 0 if daylight=="D" else 1;
+            daylight = 0 if daylight=="D" else 1
             temperature = observation['temperature']
             humidity = observation['humidity']
             windspeed = observation['windSpeed']
             rainDesc = observation['precipitationDesc']
+            rainDesc = "No rain" if rainDesc is  "" else rainDesc
             # rainfall = observation['rainFall'] if 'rainFall' in observation else ""
         except Exception as e:
             with open("error.log.txt", "a") as error:
