@@ -24,7 +24,7 @@ coordinates = [
     ## ((28.614439,77.144623),(28.665286,77.260580)) ## previous coord for test
 ]
 
-dt = datetime.now() - timedelta(minutes=30)
+dt = datetime.now() # - timedelta(minutes=30) not needed now. time is now delhi time
 date = dt.strftime("%d-%m-%Y")
 time = dt.strftime("%H:%M")
 weekday = dt.today().weekday()
