@@ -151,23 +151,24 @@ for pointX,pointY in coordinates:
             with open(fname, "w") as jsonFile:
                 jsonFile.write(r.text)
 
-        print("Rows: {}".format(len(rows)))
+        # Poraaner poran
+        # print("Rows: {}".format(len(rows)))
 
-        try:
-            query = "insert into data values (%s" + ",%s"*17 + ")"
-            mycursor.executemany(query, rows)
-            mydb.commit()
-        except Exception as e:
-            print("Database error")
-            with open("error.log.txt", "a") as error:
-                s = "[%s] %s\n" % (datetime.now(), e)
-                error.write(s)
+try:
+    query = "insert into data values (%s" + ",%s"*17 + ")"
+    mycursor.executemany(query, rows)
+    mydb.commit()
+except Exception as e:
+    print("Database error")
+    with open("error.log.txt", "a") as error:
+        s = "[%s] %s\n" % (datetime.now(), e)
+        error.write(s)
 
-            fname = str(datetime.now()) + ".traffic.txt"
-            with open(fname, "w") as jsonFile:
-                jsonFile.write(r.text)
+    fname = str(datetime.now()) + ".traffic.txt"
+    with open(fname, "w") as jsonFile:
+        jsonFile.write(r.text)
 
-            fname = str(datetime.now()) + ".weather.txt"
-            with open(fname, "w") as jsonFile:
-                jsonFile.write(r.text)
-            
+    fname = str(datetime.now()) + ".weather.txt"
+    with open(fname, "w") as jsonFile:
+        jsonFile.write(r.text)
+    
