@@ -87,11 +87,11 @@ for pointX,pointY in coordinates:
 
     r = requests.get(trafficURL)
 
-    # write this to a file
-    f = open("docs_samples/{}.area.txt".format(area), "w+")
-    d = json.loads(r.text)
-    f.write(json.dumps(d, indent=4, sort_keys=True))
-    f.close()
+    # write HERE JSON to a file
+    # f = open("docs_samples/{}.area.txt".format(area), "w+")
+    # d = json.loads(r.text)
+    # f.write(json.dumps(d, indent=4, sort_keys=True))
+    # f.close()
 
     if r.status_code != 200:
         print("Traffic request error")
@@ -137,8 +137,8 @@ for pointX,pointY in coordinates:
                                     SU, FF, temperature, daylight, humidity, \
                                     rainDesc, rainfall, windspeed, holiday, area, JF)
 
-                            if LI=="504-01335":
-                                print(row)
+                            # if LI=="504-01335":
+                            #     print(row)
 
                             rows.append(row)
         except Exception as e:
