@@ -10,6 +10,7 @@ create table data (
 	weekday int,
 	src varchar(100),
 	dst varchar(100),
+	li varchar(20)
 	-- le varchar(10),
 	-- cn varchar(10),
 	-- sp varchar(10),
@@ -21,6 +22,7 @@ create table data (
 	humidity varchar(5),
 	-- rainfall varchar(10),
 	raindesc varchar(40),
+	rainfall varchar(6),
 	windspeed varchar(5),
 	holiday int,
 	area int,

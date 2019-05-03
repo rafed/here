@@ -75,7 +75,7 @@ for pointX,pointY in coordinates:
             windspeed = observation['windSpeed']
             rainDesc = observation['precipitationDesc']
             rainDesc = "No rain" if rainDesc is  "" else rainDesc
-            # rainfall = observation['rainFall'] if 'rainFall' in observation else ""
+            rainfall = observation['rainFall'] if 'rainFall' in observation else ""
         except Exception as e:
             with open("error.log.txt", "a") as error:
                 s = "[%s] %s\n" % (datetime.now(), e)
@@ -134,9 +134,9 @@ for pointX,pointY in coordinates:
                                 JF = FI['CF'][0]['JF']
                                 # SHP = FI['SHP'][0]['value'][0]
                         
-                        row =   (date, time, weekday, src, dst, \
+                        row =   (date, time, weekday, LI, src, dst, \
                                 SU, FF, temperature, daylight, humidity, \
-                                rainDesc, windspeed, holiday, area, JF)
+                                rainDesc, rainfall, windspeed, holiday, area, JF)
 
                         rows.append(row)
         except Exception as e:
@@ -150,7 +150,7 @@ for pointX,pointY in coordinates:
                 jsonFile.write(r.text)
 
         try:
-            query = "insert into data values (%s" + ",%s"*14 + ")"
+            query = "insert into data values (%s" + ",%s"*16 + ")"
             mycursor.executemany(query, rows)
             mydb.commit()
         except Exception as e:
