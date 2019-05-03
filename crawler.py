@@ -143,7 +143,7 @@ for pointX,pointY in coordinates:
                 jsonFile.write(r.text)
 
         try:
-            query = "insert into data values (%s" + ",%s"*16 + ")"
+            query = "insert into data values (%s" + ",%s"*17 + ")"
             mycursor.executemany(query, rows)
             mydb.commit()
         except Exception as e:
