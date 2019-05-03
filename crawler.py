@@ -42,7 +42,7 @@ for pointX,pointY in coordinates:
     longmid = (long1+long2)/2
 
     weatherURL = "https://weather.api.here.com/weather/1.0/report.json?app_id=%s&app_code=%s&product=observation&oneobservation=true&latitude=%s&longitude=%s" % (appID, appCode, latmid, longmid)
-    trafficURL = "https://traffic.api.here.com/traffic/6.2/flow.json?app_id=%s&app_code=%s&bbox=%s,%s;%s,%s&responseattributes=sh" % (appID, appCode, lat1, long1, lat2, long2)
+    trafficURL = "https://traffic.api.here.com/traffic/6.2/flow.json?app_id=%s&app_code=%s&bbox=%s,%s;%s,%s" % (appID, appCode, lat1, long1, lat2, long2)  # &responseattributes=sh for getting shape
 
     r = requests.get(weatherURL)
     weather_data = r.text
@@ -86,6 +86,12 @@ for pointX,pointY in coordinates:
                 jsonFile.write(weather_data)
 
     r = requests.get(trafficURL)
+
+    # write this to a file
+    f = open("docs_samples/{}.area.txt".format(area), "w+")
+    d = json.loads(r.text)
+    f.write(json.dumps(d, indent=4, sort_keys=True))
+    f.close()
 
     if r.status_code != 200:
         print("Traffic request error")
@@ -131,6 +137,9 @@ for pointX,pointY in coordinates:
                                     SU, FF, temperature, daylight, humidity, \
                                     rainDesc, rainfall, windspeed, holiday, area, JF)
 
+                            if LI=="504-01335":
+                                print(row)
+
                             rows.append(row)
         except Exception as e:
             print("Field access error in traffic json!")
@@ -141,6 +150,8 @@ for pointX,pointY in coordinates:
             fname = str(datetime.now()) + ".traffic.txt"
             with open(fname, "w") as jsonFile:
                 jsonFile.write(r.text)
+
+        print("Rows: {}".format(len(rows)))
 
         try:
             query = "insert into data values (%s" + ",%s"*17 + ")"
