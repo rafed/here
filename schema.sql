@@ -9,6 +9,7 @@ create table data (
 	time varchar(5),
 	weekday int,
 	li varchar(20),
+	pc, varchar(8),
 	src varchar(100),
 	dst varchar(100),
 	-- le varchar(10),

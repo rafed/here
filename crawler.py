@@ -111,34 +111,27 @@ for pointX,pointY in coordinates:
                 for RW in RWS['RW']:
                     for FIS in RW['FIS']:
                         LI = RW['LI']
-                        if "-" in LI:
-                            src = RW['DE']
-                            for FI in FIS['FI']:
-                                dst = FI['TMC']['DE']
-                                # LE = FI['TMC']['LE']
-                                # CN = FI['CF']['CN']
-                                # SP = FI['CF'][0]['SP']
-                                SU = FI['CF'][0]['SU']
-                                FF = FI['CF'][0]['FF']
-                                JF = FI['CF'][0]['JF']
-                                # SHP = FI['SHP'][0]['value'][0]
-                        else:
-                            dst = RW['DE']
-                            for FI in FIS['FI']:
-                                src = FI['TMC']['DE']
-                                # LE = FI['TMC']['LE']
-                                # CN = FI['CF'][0]['CN']
-                                # SP = FI['CF'][0]['SP']
-                                SU = FI['CF'][0]['SU']
-                                FF = FI['CF'][0]['FF']
-                                JF = FI['CF'][0]['JF']
-                                # SHP = FI['SHP'][0]['value'][0]
+                        dst = RW['DE']
+                        for FI in FIS['FI']:
+                            src = FI['TMC']['DE']
+                            # LE = FI['TMC']['LE']
+                            # CN = FI['CF'][0]['CN']
+                            # SP = FI['CF'][0]['SP']
+                            SU = FI['CF'][0]['SU']
+                            FF = FI['CF'][0]['FF']
+                            JF = FI['CF'][0]['JF']
+                            # SHP = FI['SHP'][0]['value'][0]
+                            PC = FI['TMC']['PC']
                         
-                        row =   (date, time, weekday, LI, src, dst, \
-                                SU, FF, temperature, daylight, humidity, \
-                                rainDesc, rainfall, windspeed, holiday, area, JF)
+                            if "-" in LI:
+                                src,dst = dst,src
 
-                        rows.append(row)
+                            row =   (date, time, weekday, \
+                                    LI, PC, src, dst, \
+                                    SU, FF, temperature, daylight, humidity, \
+                                    rainDesc, rainfall, windspeed, holiday, area, JF)
+
+                            rows.append(row)
         except Exception as e:
             print("Field access error in traffic json!")
             with open("error.log.txt", "a") as error:
