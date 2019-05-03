@@ -8,9 +8,9 @@ create table data (
 	date varchar(10),
 	time varchar(5),
 	weekday int,
+	li varchar(20),
 	src varchar(100),
 	dst varchar(100),
-	li varchar(20)
 	-- le varchar(10),
 	-- cn varchar(10),
 	-- sp varchar(10),
